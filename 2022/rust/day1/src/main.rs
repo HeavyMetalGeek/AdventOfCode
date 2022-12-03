@@ -21,7 +21,7 @@ fn main() -> Result<()> {
     for arg in args {
         match arg.as_str() {
             "stage1" | "1" => {
-                println!("{}", stage1(Input::Answer)?.iter().max().unwrap_or(&0));
+                println!("{}", stage1(Input::Answer)?.into_iter().max().unwrap_or(0));
                 return Ok(());
             }
             "stage2" | "2" => {
@@ -29,7 +29,7 @@ fn main() -> Result<()> {
                 return Ok(());
             }
             "test1" => {
-                println!("{}", stage1(Input::Test)?.iter().max().unwrap_or(&0));
+                println!("{}", stage1(Input::Test)?.into_iter().max().unwrap_or(0));
                 return Ok(());
             }
             "test2" => {
@@ -56,7 +56,7 @@ fn stage1(input: Input) -> Result<Vec<usize>> {
 
 fn stage2(input: Input) -> Result<usize> {
     let mut stage1 = stage1(input)?;
-    stage1.sort_by(|a, b| b.partial_cmp(a).expect("Sort failed"));
+    stage1.sort_by(|a, b| b.cmp(a));
     Ok(stage1.into_iter().take(3).sum::<usize>())
 }
 
