@@ -59,3 +59,15 @@ fn stage2(input: Input) -> Result<usize> {
     stage1.sort_by(|a, b| b.partial_cmp(a).expect("Sort failed"));
     Ok(stage1.into_iter().take(3).sum::<usize>())
 }
+
+#[test]
+fn stage1_test() {
+    let res = stage1(Input::Test).unwrap().into_iter().max().unwrap_or(0);
+    assert_eq!(res, 24000);
+}
+
+#[test]
+fn stage2_test() {
+    let res = stage2(Input::Test).unwrap();
+    assert_eq!(res, 45000);
+}
