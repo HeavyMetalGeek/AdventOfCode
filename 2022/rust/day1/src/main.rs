@@ -50,24 +50,12 @@ fn stage1(input: Input) -> Result<Vec<usize>> {
     };
     Ok(txt
         .split("\n\n")
-        .map(|s| {
-            s.split('\n')
-                .map(|c| c.to_string().parse::<usize>().unwrap_or(0))
-                .sum::<usize>()
-        })
+        .map(|s| s.lines().flat_map(str::parse::<usize>).sum::<usize>())
         .collect())
 }
 
 fn stage2(input: Input) -> Result<usize> {
     let mut stage1 = stage1(input)?;
     stage1.sort_by(|a, b| b.partial_cmp(a).expect("Sort failed"));
-    println!(
-        "{}",
-        stage1
-            .iter()
-            .map(|v| format!("{}", v))
-            .collect::<Vec<String>>()
-            .join(",")
-    );
     Ok(stage1.into_iter().take(3).sum::<usize>())
 }
