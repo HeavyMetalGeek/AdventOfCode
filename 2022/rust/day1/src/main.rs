@@ -1,20 +1,8 @@
+mod input;
+
 use anyhow::Result;
+use input::Input;
 use std::env;
-use std::fs::read_to_string;
-
-enum Input {
-    Test,
-    Answer,
-}
-
-impl Input {
-    fn value(&self) -> &str {
-        match *self {
-            Input::Test => "input/test.txt",
-            Input::Answer => "input/stage1.txt",
-        }
-    }
-}
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -44,11 +32,8 @@ fn main() -> Result<()> {
 }
 
 fn stage1(input: Input) -> Result<Vec<usize>> {
-    let txt: String = match input {
-        Input::Test => read_to_string(Input::Test.value())?.parse()?,
-        Input::Answer => read_to_string(Input::Answer.value())?.parse()?,
-    };
-    Ok(txt
+    Ok(input
+        .into_string()?
         .split("\n\n")
         .map(|s| s.lines().flat_map(str::parse::<usize>).sum::<usize>())
         .collect())
