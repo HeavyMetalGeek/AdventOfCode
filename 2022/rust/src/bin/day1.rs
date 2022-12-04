@@ -1,8 +1,8 @@
-mod input;
-
 use anyhow::Result;
-use input::Input;
+use aoc::input::Input;
 use std::env;
+
+const DAY: usize = 1;
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -33,7 +33,7 @@ fn main() -> Result<()> {
 
 fn stage1(input: Input) -> Result<Vec<usize>> {
     Ok(input
-        .into_string()?
+        .into_string(DAY)?
         .split("\n\n")
         .map(|s| s.lines().flat_map(str::parse::<usize>).sum::<usize>())
         .collect())

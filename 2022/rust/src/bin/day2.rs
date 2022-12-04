@@ -1,10 +1,9 @@
-mod input;
-mod play;
-
 use anyhow::Result;
-use input::Input;
-use play::{Play, PlayResult};
+use aoc::input::Input;
+use aoc::play::{Play, PlayResult};
 use std::env;
+
+const DAY: usize = 2;
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -34,7 +33,11 @@ fn main() -> Result<()> {
 }
 
 fn stage1(input: Input) -> Result<usize> {
-    Ok(input.into_string()?.lines().flat_map(score1).sum::<usize>())
+    Ok(input
+        .into_string(DAY)?
+        .lines()
+        .flat_map(score1)
+        .sum::<usize>())
 }
 
 fn score1(guide_text: &str) -> Result<usize> {
@@ -46,7 +49,11 @@ fn score1(guide_text: &str) -> Result<usize> {
 }
 
 fn stage2(input: Input) -> Result<usize> {
-    Ok(input.into_string()?.lines().flat_map(score2).sum::<usize>())
+    Ok(input
+        .into_string(DAY)?
+        .lines()
+        .flat_map(score2)
+        .sum::<usize>())
 }
 
 fn score2(guide_text: &str) -> Result<usize> {
