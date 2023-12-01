@@ -1,0 +1,18 @@
+[package]
+name = "day1"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "part1"
+path = "src/part1.rs"
+
+[[bin]]
+name = "part2"
+path = "src/part2.rs"
+
+[dependencies]
+aoc_lib = { path = "../aoc_lib" }
+anyhow = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
