@@ -2,7 +2,7 @@ import numpy as np
 import regex as re
 
 
-def get_first_last_digit(input: str):
+def get_first_last_digit(input: str, part: int):
     zero_code = 48
     nine_code = 57
 
@@ -23,24 +23,25 @@ def get_first_last_digit(input: str):
     first = None
     last = None
 
-    for s in string_nums_to_code_map.keys():
-        index = input.find(s)
+    if part == 2:
+        for s in string_nums_to_code_map.keys():
+            index = input.find(s)
 
-        if index == -1:
-            continue
+            if index == -1:
+                continue
 
-        if first_index is None or index < first_index:
-            first_index = index
-            first = string_nums_to_code_map[s]
+            if first_index is None or index < first_index:
+                first_index = index
+                first = string_nums_to_code_map[s]
 
-    for s in string_nums_to_code_map.keys():
-        index = input.rfind(s)
-        if index == -1:
-            continue
+        for s in string_nums_to_code_map.keys():
+            index = input.rfind(s)
+            if index == -1:
+                continue
 
-        if last_index is None or index > last_index:
-            last_index = index
-            last = string_nums_to_code_map[s]
+            if last_index is None or index > last_index:
+                last_index = index
+                last = string_nums_to_code_map[s]
 
     for index, code in enumerate([ord(d) for d in input]):
         if code >= zero_code and code <= nine_code:
@@ -68,11 +69,11 @@ def get_first_last_digit(input: str):
     return (int(first), int(last))
 
 
-def main(file):
+def main(file: str, part: int):
     total = 0
     with open(file, "r", newline="") as f:
         for line in f:
-            first, last = get_first_last_digit(line)
+            first, last = get_first_last_digit(line, part)
             calibration_value = first * 10 + last
             total += calibration_value
 
@@ -81,5 +82,6 @@ def main(file):
 
 if __name__ == "__main__":
     # main("day_1_part_2_test_input.txt")
-    main("day_1_input.txt")
+    main("day_1_input.txt", part=1)
+    main("day_1_input.txt", part=2)
     print("All done!")
