@@ -54,13 +54,4 @@ impl NumWord {
 }
 
 pub const INPUT_DAY1: &'static str = include_str!("input1d1.txt");
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        assert_eq!(4, 4);
-    }
-}
+pub const INPUT_DAY2: &'static str = include_str!("input1d2.txt");
