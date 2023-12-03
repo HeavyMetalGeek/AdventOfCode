@@ -8,8 +8,8 @@ fn main() -> anyhow::Result<()> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn day3_part2_test() {
+//    #[test]
+//    fn day3_part2_test() {
 //        let input = r#"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 //Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 //Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
@@ -18,8 +18,8 @@ mod tests {
 //"#;
 //        let games = process_input(input);
 //        let result = get_power_sum_from_games(games);
-        //assert_eq!(result, 2286);
-        assert!(false);
-    }
+//        //assert_eq!(result, 2286);
+//        assert!(false);
+//    }
 }
 
