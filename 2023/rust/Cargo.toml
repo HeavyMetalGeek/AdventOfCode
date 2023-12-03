@@ -4,6 +4,7 @@ members = [
     "aoc_lib",
     "day1",
     "day2",
+    "day3",
 ]
 
 [workspace.dependencies]

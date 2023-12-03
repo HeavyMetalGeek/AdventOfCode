@@ -55,3 +55,4 @@ impl NumWord {
 
 pub const INPUT_DAY1: &'static str = include_str!("input1d1.txt");
 pub const INPUT_DAY2: &'static str = include_str!("input1d2.txt");
+pub const INPUT_DAY3: &'static str = include_str!("input1d3.txt");
