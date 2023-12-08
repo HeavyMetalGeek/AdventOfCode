@@ -1,2 +1,6 @@
 target/
 *.lock
+
+### IntelliJ IDEA ###
+.idea
+out/
