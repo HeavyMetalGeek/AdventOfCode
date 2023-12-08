@@ -10,18 +10,6 @@ def auto_id():
         yield int(i)
 
 
-class Line:
-    def __init__(self, p1: Point, p2: Point):
-        self.p1 = p1
-        self.p2 = p2
-
-    def distance(self, p: Point):
-        return abs(
-            (self.p2.x - self.p1.x) * (self.p1.y - p.y)
-            - (self.p1.x - p.x) * (self.p2.y - self.p1.y)
-        ) / math.sqrt((self.p2.x - self.p1.x) ** 2 + (self.p2.y - self.p1.y) ** 2)
-
-
 class ValueBase:
     def __init__(self, bounding_box: BoundingBox):
         self.bounding_box = bounding_box
@@ -75,8 +63,6 @@ class BoundingBox:
         dist_mid = p.distance(self.mid)
         dist_start = p.distance(self.start)
         dist_end = p.distance(self.end)
-
-        # print(f"dist_mid: {dist_mid}, dist_start: {dist_start}, dist_end {dist_end}")
 
         return min(dist_mid, dist_start, dist_end)
 
@@ -169,11 +155,6 @@ def main(file: str, part: int):
                 ]
             )
             for v in board.values:
-                # distances = [
-                #     v.bounding_box.min_distance(d.bounding_box.start) for d in board.symbols
-                # ]
-                # min_distance = min(distances)
-
                 start_dist = symbol_tree.query(v.bounding_box.start.ToTuple())[0]
                 mid_dist = symbol_tree.query(v.bounding_box.mid.ToTuple())[0]
                 end_dist = symbol_tree.query(v.bounding_box.end.ToTuple())[0]
@@ -229,41 +210,6 @@ def main(file: str, part: int):
                     candidate_2 = distinct_candidates[1]
                     gear_ratio = candidate_1.part_number * candidate_2.part_number
                     total += gear_ratio
-
-                # print(v1.part_number, v1.Id, v2.part_number, v2.Id, v3.part_number, v3.Id, v4.part_number, v4.Id, v5.part_number, v5.Id, v6.part_number, v6.Id)
-
-            # # Collect only part numbers that are adjacent to a "*"
-            # candidate_part_numbers = []
-            # for v in board.values:
-            #     start_dist = symbol_tree.query(v.bounding_box.start.ToTuple())[0]
-            #     mid_dist = symbol_tree.query(v.bounding_box.mid.ToTuple())[0]
-            #     end_dist = symbol_tree.query(v.bounding_box.end.ToTuple())[0]
-            #     min_distance = min(start_dist, mid_dist, end_dist)
-
-            #     if min_distance <= 1 or abs(min_distance - 1.4142135623730951) < 1e-6:
-            #         candidate_part_numbers.append(v)
-
-            # # Brute force, because I've spent too long on this...
-            # seen_part_numbers = []
-            # for candidate_1 in candidate_part_numbers:
-            #     for candidate_2 in candidate_part_numbers:
-            #         if (
-            #             candidate_1.Id == candidate_2.Id
-            #             or candidate_1.Id in seen_part_numbers
-            #             or candidate_2 in seen_part_numbers
-            #         ):
-            #             continue
-
-            #         dist_1 = ez_min_distance(symbol_tree, candidate_1)
-            #         dist_2 = ez_min_distance(symbol_tree, candidate_2)
-            #         print(dist_1, dist_2)
-
-            #         if ez_dist_check(dist_1) and ez_dist_check(dist_2):
-            #             gear_ratio = candidate_1.part_number * candidate_2.part_number
-            #             print(gear_ratio, candidate_1, candidate_2)
-            #             total += gear_ratio
-            #             seen_part_numbers.append(candidate_1.Id)
-            #             seen_part_numbers.append(candidate_2.Id)
 
         print("Total is:", total)
 
