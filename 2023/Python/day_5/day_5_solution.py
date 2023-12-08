@@ -23,25 +23,27 @@ class MapBase:
         for line in lines:
             dest_start, source_start, length = [int(d) for d in line.split() if d != ""]
 
-            dest = [
-                d
-                for d in np.linspace(
-                    dest_start,
-                    dest_start + length,
-                    length,
-                    dtype=int,
-                )
-            ]
+            # dest = [
+            #     d
+            #     for d in np.linspace(
+            #         dest_start,
+            #         dest_start + length,
+            #         length,
+            #         dtype=int,
+            #     )
+            # ]
 
-            source = [
-                d
-                for d in np.linspace(
-                    source_start,
-                    source_start + length,
-                    length,
-                    dtype=int,
-                )
-            ]
+            # source = [
+            #     d
+            #     for d in np.linspace(
+            #         source_start,
+            #         source_start + length,
+            #         length,
+            #         dtype=int,
+            #     )
+            # ]
+            dest = [int(d) for d in range(dest_start, dest_start + length)]
+            source = [int(d) for d in range(source_start, source_start + length)]
 
             self.map = self.map | dict(zip(source, dest))
 
@@ -123,6 +125,9 @@ def main(file: str, part: int):
         # don't forget the last pool
         current_map.parse(line_pool)
 
+        # print(maps[1].map)
+        # exit()
+
         # blarg = maps[1]
         # kk = []
         # vv = []
@@ -142,6 +147,8 @@ def main(file: str, part: int):
         for seed in seeds:
             locs.append(seed_to_location(maps, seed))
 
+        print("min location:", min(locs))
+
 
 def seed_to_location(maps: list[MapBase], seed: int):
     soil = maps[0][seed]
@@ -152,14 +159,14 @@ def seed_to_location(maps: list[MapBase], seed: int):
     humidity = maps[5][temperature]
     location = maps[6][humidity]
 
-    print("seed", seed)
-    print("\tsoil", soil)
-    print("\tfertalizer", fertilizer)
-    print("\twater", water)
-    print("\tlight", light)
-    print("\ttemperature", temperature)
-    print("\thumidity", humidity)
-    print("\tlocation", location)
+    # print("seed", seed)
+    # print("\tsoil", soil)
+    # print("\tfertalizer", fertilizer)
+    # print("\twater", water)
+    # print("\tlight", light)
+    # print("\ttemperature", temperature)
+    # print("\thumidity", humidity)
+    # print("\tlocation", location)
 
     return location
 
