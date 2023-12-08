@@ -3,5 +3,4 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
-*.iml
 out/
