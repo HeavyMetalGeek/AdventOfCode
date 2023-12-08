@@ -5,7 +5,7 @@ All tests were done on with hyperfine with three warmup rounds. CPU uses was a R
 | Language | Runtime | min ... max | runs |
 |----------|---------|-------------|------|
 | Python (both) | 492.9ms ± 3.7ms | 487.5ms ... 507.5ms | 100 |
-| rust (part 1) | 0 ± 0ms | 0ms ... 0ms | 100 |
-| rust (part 2) | 0 ± 0ms | 0ms ... 0ms | 100 |
+| rust (part 1) | 5.8 ± 0.2ms | 5.3ms ... 6.6ms | 100 |
+| rust (part 2) | 6.0 ± 0.2ms | 5.7ms ... 6.8ms | 100 |
 
 > Note: Rust results are inaccurate because they ran **too** fast!
