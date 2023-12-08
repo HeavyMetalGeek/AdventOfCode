@@ -8,7 +8,7 @@ class MapBase:
         self.map = {}
 
     def __str__(self):
-        return f"{self.dest_start, self.source_start, self.length}"
+        return str(self.map)
 
     def __getitem__(self, key):
         return self.get_value(key)
@@ -123,18 +123,24 @@ def main(file: str, part: int):
         # don't forget the last pool
         current_map.parse(line_pool)
 
-        seeds = [int(d) for d in lines[0].split(":")[1].split()]
+        # blarg = maps[1]
+        # kk = []
+        # vv = []
+        # for k, v in blarg.map.items():
+        #     kk.append(k)
+        #     vv.append(v)
 
-        for seed in seeds:
-            print(seed_to_location(maps, seed))
-        # print(maps[0])
+        # # kk.sort()
+        # # vv.sort()
+        # for kk, vv in zip(kk, vv):
+        #     print(kk, vv)
         # exit()
 
-        # seed_to_soil_map = maps[0]
-        # print(seed_to_soil_map.get_soil(79))
-        # print(seed_to_soil_map.get_soil(14))
-        # print(seed_to_soil_map.get_soil(55))
-        # print(seed_to_soil_map.get_soil(13))
+        seeds = [int(d) for d in lines[0].split(":")[1].split()]
+
+        locs = []
+        for seed in seeds:
+            locs.append(seed_to_location(maps, seed))
 
 
 def seed_to_location(maps: list[MapBase], seed: int):
@@ -146,13 +152,14 @@ def seed_to_location(maps: list[MapBase], seed: int):
     humidity = maps[5][temperature]
     location = maps[6][humidity]
 
-    print("\tseed", seed)
+    print("seed", seed)
     print("\tsoil", soil)
     print("\tfertalizer", fertilizer)
     print("\twater", water)
     print("\tlight", light)
     print("\ttemperature", temperature)
     print("\thumidity", humidity)
+    print("\tlocation", location)
 
     return location
 
