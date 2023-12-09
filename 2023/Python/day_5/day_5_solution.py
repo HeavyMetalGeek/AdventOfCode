@@ -124,21 +124,24 @@ def main(file: str, part: int):
             print("min location (part 1):", min(locs))
         elif part == 2:
             seed_info = [int(d) for d in lines[0].split(":")[1].split()]
+            seed_pairs = list(zip(seed_info[::2], seed_info[1::2]))
             min_location = 1e9
-            my_ranges = []
-            blarg = enumerate(seed_info)
-            for index, value in blarg:
-                start = seed_info[index]
-                end = start + seed_info[index + 1]
-                my_range = range(start, end)
-                blarg.__next__()
-                my_ranges.append(my_range)
+            min_range = None
+            # find the range with the minimum value
+            for start, length in seed_pairs:
+                end = start + length
+                start_location = seed_to_location(maps, start)
+                end_location = seed_to_location(maps, end)
+                if start_location < min_location or end_location < min_location:
+                    min_location = min(start_location, end_location)
+                    min_range = range(start, end)
 
-            for r in my_ranges:
-                for seed in r:
-                    location = seed_to_location(maps, seed)
-                    if location < min_location:
-                        min_location = location
+            # search in the min_range for the acutal minimum
+            min_location = 1e12
+            for seed in min_range:
+                location = seed_to_location(maps, seed)
+                if location < min_location:
+                    min_location = location
 
             print("min_location (part 2):", min_location)
 
@@ -168,4 +171,4 @@ if __name__ == "__main__":
     main("day_5_test_input.txt", 1)
     main("day_5_input.txt", 1)
     main("day_5_test_input.txt", 2)
-    # main("day_5_input.txt", 2)
+    main("day_5_input.txt", 2)
