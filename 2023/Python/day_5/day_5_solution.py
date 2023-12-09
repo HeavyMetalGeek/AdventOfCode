@@ -3,7 +3,7 @@ import regex as re
 import numpy as np
 
 
-class asdf:
+class MapBase:
     def __init__(self, source_start: int, dest_start: int, length: int):
         self.source_start = source_start
         self.dest_start = dest_start
@@ -20,7 +20,7 @@ class asdf:
         return x >= self.source_start and x <= self.source_end
 
 
-class MapBase:
+class MapHandler:
     def __init__(self):
         self.maps = []
 
@@ -40,42 +40,42 @@ class MapBase:
     def parse(self, lines: list[str]):
         for line in lines:
             dest_start, source_start, length = [int(d) for d in line.split() if d != ""]
-            my_map = asdf(source_start, dest_start, length)
+            my_map = MapBase(source_start, dest_start, length)
             self.maps.append(my_map)
 
 
 # why did I do this...
-class SeedToSoilMap(MapBase):
+class SeedToSoilMap(MapHandler):
     def get_soil(self, seed: int):
         return self.get_value(seed)
 
 
-class SoilToFertilizerMap(MapBase):
+class SoilToFertilizerMap(MapHandler):
     def get_fertilizer(self, soil: int):
         self.get_value(soil)
 
 
-class FertilizerToWaterMap(MapBase):
+class FertilizerToWaterMap(MapHandler):
     def get_water(self, fertilizer: int):
         self.get_value(fertilizer)
 
 
-class WaterToLightMap(MapBase):
+class WaterToLightMap(MapHandler):
     def get_light(self, water: int):
         self.get_value(water)
 
 
-class LightToTemperatureMap(MapBase):
+class LightToTemperatureMap(MapHandler):
     def get_temperature(self, light: int):
         self.get_value(light)
 
 
-class TemperatureToHumidityMap(MapBase):
+class TemperatureToHumidityMap(MapHandler):
     def get_humidity(self, temperature: int):
         self.get_value(temperature)
 
 
-class HumidityToLocationMap(MapBase):
+class HumidityToLocationMap(MapHandler):
     def get_humidity(self, humidity: int):
         self.get_value(humidity)
 
@@ -121,22 +121,6 @@ def main(file: str, part: int):
         # don't forget the last pool
         current_map.parse(line_pool)
 
-        # print(maps[1].map)
-        # exit()
-
-        # blarg = maps[1]
-        # kk = []
-        # vv = []
-        # for k, v in blarg.map.items():
-        #     kk.append(k)
-        #     vv.append(v)
-
-        # # kk.sort()
-        # # vv.sort()
-        # for kk, vv in zip(kk, vv):
-        #     print(kk, vv)
-        # exit()
-
         seeds = [int(d) for d in lines[0].split(":")[1].split()]
 
         locs = []
@@ -146,7 +130,7 @@ def main(file: str, part: int):
         print("min location:", min(locs))
 
 
-def seed_to_location(maps: list[MapBase], seed: int):
+def seed_to_location(maps: list[MapHandler], seed: int):
     soil = maps[0][seed]
     fertilizer = maps[1][soil]
     water = maps[2][fertilizer]
