@@ -12,10 +12,8 @@ class MapBase:
         self.dest_end = dest_start + length - 1
         self.offset = self.dest_start - self.source_start
 
-        self.map_function = (
-            lambda x: x + self.offset if self.in_range(x) else x
-        )
-    
+        self.map_function = lambda x: x + self.offset if self.in_range(x) else x
+
     def __str__(self):
         return f"source_start: {self.source_start}; dest_start: {self.dest_start}; offset: {self.offset}"
 
@@ -117,19 +115,32 @@ def main(file: str, part: int):
         # don't forget the last pool
         current_map.parse(line_pool)
 
-        # seed_to_soil_map = maps[0]
-        # print(seed_to_soil_map.maps[1])
-        # print(seed_to_soil_map.maps[1].in_range(79))
-        # print(seed_to_soil_map.maps[1].map_function(79))
-        # exit()
+        if part == 1:
+            seeds = [int(d) for d in lines[0].split(":")[1].split()]
 
-        seeds = [int(d) for d in lines[0].split(":")[1].split()]
+            locs = []
+            for seed in seeds:
+                locs.append(seed_to_location(maps, seed))
+            print("min location (part 1):", min(locs))
+        elif part == 2:
+            seed_info = [int(d) for d in lines[0].split(":")[1].split()]
+            min_location = 1e9
+            my_ranges = []
+            blarg = enumerate(seed_info)
+            for index, value in blarg:
+                start = seed_info[index]
+                end = start + seed_info[index + 1]
+                my_range = range(start, end)
+                blarg.__next__()
+                my_ranges.append(my_range)
 
-        locs = []
-        for seed in seeds:
-            locs.append(seed_to_location(maps, seed))
+            for r in my_ranges:
+                for seed in r:
+                    location = seed_to_location(maps, seed)
+                    if location < min_location:
+                        min_location = location
 
-        print("min location:", min(locs))
+            print("min_location (part 2):", min_location)
 
 
 def seed_to_location(maps: list[MapHandler], seed: int):
@@ -141,20 +152,20 @@ def seed_to_location(maps: list[MapHandler], seed: int):
     humidity = maps[5][temperature]
     location = maps[6][humidity]
 
-    print("seed", seed)
-    print("\tsoil", soil)
-    print("\tfertalizer", fertilizer)
-    print("\twater", water)
-    print("\tlight", light)
-    print("\ttemperature", temperature)
-    print("\thumidity", humidity)
-    print("\tlocation", location)
+    # print("seed", seed)
+    # print("\tsoil", soil)
+    # print("\tfertalizer", fertilizer)
+    # print("\twater", water)
+    # print("\tlight", light)
+    # print("\ttemperature", temperature)
+    # print("\thumidity", humidity)
+    # print("\tlocation", location)
 
     return location
 
 
 if __name__ == "__main__":
     main("day_5_test_input.txt", 1)
-    # main("day_5_input.txt", 1)
-    # main("day_5_test_input.txt", 2)
+    main("day_5_input.txt", 1)
+    main("day_5_test_input.txt", 2)
     # main("day_5_input.txt", 2)
