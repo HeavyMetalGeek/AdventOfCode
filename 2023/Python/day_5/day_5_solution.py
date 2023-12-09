@@ -31,10 +31,6 @@ class MapBase:
         return self.get_value(key)
 
     def get_value(self, input: int):
-        # try:
-        #     return self.map[input]
-        # except:
-        #     return input
         for m in self.maps:
             if m.in_range(input):
                 return m.map_function(input)
@@ -46,11 +42,6 @@ class MapBase:
             dest_start, source_start, length = [int(d) for d in line.split() if d != ""]
             my_map = asdf(source_start, dest_start, length)
             self.maps.append(my_map)
-
-            # dest = [int(d) for d in range(dest_start, dest_start + length)]
-            # source = [int(d) for d in range(source_start, source_start + length)]
-
-            # self.map = self.map | dict(zip(source, dest))
 
 
 # why did I do this...
