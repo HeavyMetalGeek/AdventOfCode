@@ -8,13 +8,16 @@ class MapBase:
         self.source_start = source_start
         self.dest_start = dest_start
         self.length = length
+        self.source_end = source_start + length - 1
+        self.dest_end = dest_start + length - 1
+        self.offset = self.dest_start - self.source_start
 
-        self.source_end = source_start + length
-        self.dest_end = dest_start + length
-        offset = self.source_end - self.source_start
         self.map_function = (
-            lambda x: self.source_start + offset if self.in_range(x) else x
+            lambda x: x + self.offset if self.in_range(x) else x
         )
+    
+    def __str__(self):
+        return f"source_start: {self.source_start}; dest_start: {self.dest_start}; offset: {self.offset}"
 
     def in_range(self, x: int):
         return x >= self.source_start and x <= self.source_end
@@ -113,6 +116,12 @@ def main(file: str, part: int):
 
         # don't forget the last pool
         current_map.parse(line_pool)
+
+        # seed_to_soil_map = maps[0]
+        # print(seed_to_soil_map.maps[1])
+        # print(seed_to_soil_map.maps[1].in_range(79))
+        # print(seed_to_soil_map.maps[1].map_function(79))
+        # exit()
 
         seeds = [int(d) for d in lines[0].split(":")[1].split()]
 
