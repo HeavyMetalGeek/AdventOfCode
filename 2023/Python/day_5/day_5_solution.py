@@ -3,9 +3,26 @@ import regex as re
 import numpy as np
 
 
+class asdf:
+    def __init__(self, source_start: int, dest_start: int, length: int):
+        self.source_start = source_start
+        self.dest_start = dest_start
+        self.length = length
+
+        self.source_end = source_start + length
+        self.dest_end = dest_start + length
+        offset = self.source_end - self.source_start
+        self.map_function = (
+            lambda x: self.source_start + offset if self.in_range(x) else x
+        )
+
+    def in_range(self, x: int):
+        return x >= self.source_start and x <= self.source_end
+
+
 class MapBase:
     def __init__(self):
-        self.map = {}
+        self.maps = []
 
     def __str__(self):
         return str(self.map)
@@ -14,38 +31,26 @@ class MapBase:
         return self.get_value(key)
 
     def get_value(self, input: int):
-        try:
-            return self.map[input]
-        except:
-            return input
+        # try:
+        #     return self.map[input]
+        # except:
+        #     return input
+        for m in self.maps:
+            if m.in_range(input):
+                return m.map_function(input)
+
+        return input
 
     def parse(self, lines: list[str]):
         for line in lines:
             dest_start, source_start, length = [int(d) for d in line.split() if d != ""]
+            my_map = asdf(source_start, dest_start, length)
+            self.maps.append(my_map)
 
-            # dest = [
-            #     d
-            #     for d in np.linspace(
-            #         dest_start,
-            #         dest_start + length,
-            #         length,
-            #         dtype=int,
-            #     )
-            # ]
+            # dest = [int(d) for d in range(dest_start, dest_start + length)]
+            # source = [int(d) for d in range(source_start, source_start + length)]
 
-            # source = [
-            #     d
-            #     for d in np.linspace(
-            #         source_start,
-            #         source_start + length,
-            #         length,
-            #         dtype=int,
-            #     )
-            # ]
-            dest = [int(d) for d in range(dest_start, dest_start + length)]
-            source = [int(d) for d in range(source_start, source_start + length)]
-
-            self.map = self.map | dict(zip(source, dest))
+            # self.map = self.map | dict(zip(source, dest))
 
 
 # why did I do this...
