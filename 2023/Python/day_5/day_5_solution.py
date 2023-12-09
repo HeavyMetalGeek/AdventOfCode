@@ -80,27 +80,20 @@ class HumidityToLocationMap(MapHandler):
         self.get_value(humidity)
 
 
-def map_generator():
-    maps = [
-        SeedToSoilMap(),
-        SoilToFertilizerMap(),
-        FertilizerToWaterMap(),
-        WaterToLightMap(),
-        LightToTemperatureMap(),
-        TemperatureToHumidityMap(),
-        HumidityToLocationMap(),
-    ]
-
-    for m in maps:
-        yield m
-
-
 def main(file: str, part: int):
     with open(file, "r", newline="") as f:
         lines = f.readlines()
         lines = [d.strip() for d in lines]
 
-        maps = [d for d in map_generator()]
+        maps = [
+            SeedToSoilMap(),
+            SoilToFertilizerMap(),
+            FertilizerToWaterMap(),
+            WaterToLightMap(),
+            LightToTemperatureMap(),
+            TemperatureToHumidityMap(),
+            HumidityToLocationMap(),
+        ]
         map_index = 0
         current_map = maps[map_index]
         line_pool = []
@@ -139,14 +132,14 @@ def seed_to_location(maps: list[MapHandler], seed: int):
     humidity = maps[5][temperature]
     location = maps[6][humidity]
 
-    # print("seed", seed)
-    # print("\tsoil", soil)
-    # print("\tfertalizer", fertilizer)
-    # print("\twater", water)
-    # print("\tlight", light)
-    # print("\ttemperature", temperature)
-    # print("\thumidity", humidity)
-    # print("\tlocation", location)
+    print("seed", seed)
+    print("\tsoil", soil)
+    print("\tfertalizer", fertilizer)
+    print("\twater", water)
+    print("\tlight", light)
+    print("\ttemperature", temperature)
+    print("\thumidity", humidity)
+    print("\tlocation", location)
 
     return location
 
