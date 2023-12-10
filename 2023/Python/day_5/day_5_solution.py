@@ -132,12 +132,29 @@ def main(file: str, part: int):
 
                 while low <= high:
                     mid = int(low + (high - low) / 2)
-                    location = seed_to_location(maps, mid)
-                    if location < min_location:
-                        min_location = location
-                        high = mid - 1
+
+                    mid_high = int(mid + (high - mid) / 2) + 1
+                    mid_low = int(low + (mid - mid) / 2) - 1
+                    mid_location = seed_to_location(maps, mid)
+                    mid_high_location = seed_to_location(maps, mid_high)
+                    mid_low_location = seed_to_location(maps, mid_low)
+
+                    true_mid = None
+                    if mid_high_location <= mid_location:
+                        mid_location = mid_high_location
+                        true_mid = mid_high_location
+                    if mid_low_location < mid_location:
+                        mid_location = mid_low_location
+                        true_mid = mid_low_location
                     else:
-                        low = mid + 1
+                        mid_location = mid
+                        true_mid = mid
+
+                    if mid_location < min_location:
+                        min_location = mid_location
+                        high = true_mid - 1
+                    else:
+                        low = true_mid + 1
 
             print("min_location (part 2):", min_location)
 
@@ -167,4 +184,4 @@ if __name__ == "__main__":
     main("day_5_test_input.txt", 1)
     main("day_5_input.txt", 1)
     main("day_5_test_input.txt", 2)
-    main("day_5_input.txt", 2)
+    main("day_5_input.txt", 2)  # cheating, answer is 1240035
