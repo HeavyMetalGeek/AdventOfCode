@@ -1,3 +1,8 @@
+pub const INPUT_DAY1: &str = include_str!("input1d1.txt");
+pub const INPUT_DAY2: &str = include_str!("input1d2.txt");
+pub const INPUT_DAY3: &str = include_str!("input1d3.txt");
+pub const INPUT_DAY4: &str = include_str!("input1d4.txt");
+
 pub struct NumWord {
     pub word: &'static str,
     pub value: u32,
@@ -15,11 +20,11 @@ impl NumWord {
     pub const EIGHT: Self = Self::new("eight", 8);
     pub const NINE: Self = Self::new("nine", 9);
     pub const fn new(word: &'static str, value: u32) -> Self {
-        return Self {
+        Self {
             word,
             value,
             len: word.len(),
-        };
+        }
     }
 
     pub fn match_to_chars(self, chars: &[char]) -> Option<Self> {
@@ -30,7 +35,7 @@ impl NumWord {
         if word == self.word {
             return Some(self);
         }
-        return None;
+        None
     }
 
     pub fn from_chars(chars: &[char]) -> Option<Self> {
@@ -38,7 +43,7 @@ impl NumWord {
             return None;
         }
         let first_two: [char; 2] = [chars[0], chars[1]];
-        return match first_two {
+        match first_two {
             ['o', 'n'] => Self::ONE.match_to_chars(chars),
             ['t', 'w'] => Self::TWO.match_to_chars(chars),
             ['t', 'h'] => Self::THREE.match_to_chars(chars),
@@ -49,10 +54,6 @@ impl NumWord {
             ['e', 'i'] => Self::EIGHT.match_to_chars(chars),
             ['n', 'i'] => Self::NINE.match_to_chars(chars),
             _ => None,
-        };
+        }
     }
 }
-
-pub const INPUT_DAY1: &'static str = include_str!("input1d1.txt");
-pub const INPUT_DAY2: &'static str = include_str!("input1d2.txt");
-pub const INPUT_DAY3: &'static str = include_str!("input1d3.txt");
