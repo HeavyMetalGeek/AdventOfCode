@@ -1,6 +1,8 @@
 from __future__ import annotations
 import regex as re
 import numpy as np
+import scipy.optimize as opt
+import random
 
 
 class MapBase:
@@ -125,36 +127,25 @@ def main(file: str, part: int):
             seed_info = [int(d) for d in lines[0].split(":")[1].split()]
             seed_pairs = list(zip(seed_info[::2], seed_info[1::2]))
             min_location = 1e12
+
             for start, length in seed_pairs:
                 end = start + length - 1
                 low = start
                 high = end
-
-                while low <= high:
-                    mid = int(low + (high - low) / 2)
-
-                    mid_high = int(mid + (high - mid) / 2) + 1
-                    mid_low = int(low + (mid - mid) / 2) - 1
-                    mid_location = seed_to_location(maps, mid)
-                    mid_high_location = seed_to_location(maps, mid_high)
-                    mid_low_location = seed_to_location(maps, mid_low)
-
-                    true_mid = None
-                    if mid_high_location <= mid_location:
-                        mid_location = mid_high_location
-                        true_mid = mid_high_location
-                    if mid_low_location < mid_location:
-                        mid_location = mid_low_location
-                        true_mid = mid_low_location
-                    else:
-                        mid_location = mid
-                        true_mid = mid
-
-                    if mid_location < min_location:
-                        min_location = mid_location
-                        high = true_mid - 1
-                    else:
-                        low = true_mid + 1
+                search_function = lambda d: seed_to_location(maps, d)
+                bounds = ((low, high),)
+                # Search for the minimum within the range, sue random initial value to avoid local minimum
+                for i in range(100):
+                    try_mid = random.randrange(low, high)
+                    min_range = opt.minimize(
+                        search_function,
+                        try_mid,
+                        method="Nelder-Mead",
+                        bounds=bounds,
+                        tol=1e-6,
+                    )
+                    if min_range.fun < min_location:
+                        min_location = min_range.fun
 
             print("min_location (part 2):", min_location)
 
@@ -184,4 +175,4 @@ if __name__ == "__main__":
     main("day_5_test_input.txt", 1)
     main("day_5_input.txt", 1)
     main("day_5_test_input.txt", 2)
-    main("day_5_input.txt", 2)  # cheating, answer is 1240035
+    main("day_5_input.txt", 2)  # cheating, answer is 1240035 (finally got it with scipy.optimize)
