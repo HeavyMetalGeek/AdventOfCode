@@ -125,20 +125,20 @@ def main(file: str, part: int):
             seed_info = [int(d) for d in lines[0].split(":")[1].split()]
             seed_pairs = list(zip(seed_info[::2], seed_info[1::2]))
             min_location = 1e12
-            # find the range with the minimum value
+            min_location = None
             for start, length in seed_pairs:
                 end = start + length - 1
-
+                if min_location is None:
+                    min_location = seed_to_location(maps, start)
                 low = start
                 high = end
                 mid = int(low + (high - low) / 2)
-
-                min_location = seed_to_location(maps, mid)
 
                 while low <= high:
                     mid = int(low + (high - low) / 2)
                     location = seed_to_location(maps, mid)
                     if location < min_location:
+                        min_location = location
                         high = mid - 1
                     else:
                         low = mid + 1
