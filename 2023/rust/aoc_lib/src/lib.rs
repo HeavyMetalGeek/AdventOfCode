@@ -2,6 +2,7 @@ pub const INPUT_DAY1: &str = include_str!("input1d1.txt");
 pub const INPUT_DAY2: &str = include_str!("input1d2.txt");
 pub const INPUT_DAY3: &str = include_str!("input1d3.txt");
 pub const INPUT_DAY4: &str = include_str!("input1d4.txt");
+pub const INPUT_DAY5: &str = include_str!("input1d5.txt");
 
 pub struct NumWord {
     pub word: &'static str,
