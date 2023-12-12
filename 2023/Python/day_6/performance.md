@@ -4,8 +4,6 @@ All tests were done on with hyperfine with three warmup rounds. CPU uses was a R
 
 | Language | Runtime | min ... max | runs |
 |----------|---------|-------------|------|
-| Python (both) | 15.981s ± 0.149s | 15.816s ... 16.158s | 100 |
+| Python (both) | 446.0ms ± 6.9ms | 438.2ms ... 477.7ms | 100 |
 | rust (part 1) | 0 ± 0ms | 0ms ... 0ms | 100 |
 | rust (part 2) | 0 ± 0ms | 0ms ... 0ms | 100 |
-
-> Note: I went with recursion for part 2, which absolutely *dominates* the time spent on this solution. I "cheated" and stole someone elses solution (for loop and just cleverly added up the wins) for comparison and it ran < 1 sec. So apperently recursion is the very wrong algorithm for this, or recursion behaves "weird" in Python (spent a huge ammount of time copying values???)
