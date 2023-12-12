@@ -42,19 +42,19 @@ def main(file: str, part: int):
             optimal_func = lambda x: compute_distance(race_duration, x) * -1
 
             # Search for the optimal hold time
-            minimized_hold = opt.minimize(optimal_func, 1)
+            optimized_hold = opt.minimize(optimal_func, 1)
 
             # Get the integer hold time that results in the largest distance
-            if optimal_func(math.floor(minimized_hold.x)) >= optimal_func(
-                math.ceil(minimized_hold.x)
+            if optimal_func(math.floor(optimized_hold.x)) >= optimal_func(
+                math.ceil(optimized_hold.x)
             ):
-                minimized_hold = math.floor(minimized_hold.x)
+                optimized_hold = math.floor(optimized_hold.x)
             else:
-                minimized_hold = math.ceil(minimized_hold.x)
+                optimized_hold = math.ceil(optimized_hold.x)
 
             # split thee race on optimal time, and search the lower half for the record time
             low = 1
-            high = minimized_hold - 0.1
+            high = optimized_hold - 0.1
             while low <= high:
                 mid = low + (high - low) / 2
                 distance = compute_distance(race_duration, mid)
@@ -66,7 +66,7 @@ def main(file: str, part: int):
             hold_lower = math.ceil(mid)
 
             # split the race on optimal time, and search the upper half for the record time
-            low = minimized_hold + 0.1
+            low = optimized_hold + 0.1
             high = race_duration - 1
             while low <= high:
                 mid = low + (high - low) / 2
@@ -84,11 +84,56 @@ def main(file: str, part: int):
         # multiply all the elements together to compute the answer
         print(f"Part 1 = {np.prod(win_margins)}")
     if part == 2:
-        print("Not implemented yet")
+        race_duration = int("".join(lines[0].split(":")[1].split()))
+        record_distance = int("".join(lines[1].split(":")[1].split()))
+
+        # copy pasta, because i'm lazy
+        # We want to maximize the distance, but optimize minimizes the function, so -1 to invert
+        optimal_func = lambda x: compute_distance(race_duration, x) * -1
+
+        # Search for the optimal hold time
+        optimized_hold = opt.minimize(optimal_func, 1)
+
+        # Get the integer hold time that results in the largest distance
+        if optimal_func(math.floor(optimized_hold.x)) >= optimal_func(
+            math.ceil(optimized_hold.x)
+        ):
+            optimized_hold = math.floor(optimized_hold.x)
+        else:
+            optimized_hold = math.ceil(optimized_hold.x)
+
+        # split thee race on optimal time, and search the lower half for the record time
+        low = 1
+        high = optimized_hold - 0.1
+        while low <= high:
+            mid = low + (high - low) / 2
+            distance = compute_distance(race_duration, mid)
+            if record_distance - distance < 0:
+                high = mid - 0.000001
+            else:
+                low = mid + 0.000001
+
+        hold_lower = math.ceil(mid)
+
+        # split the race on optimal time, and search the upper half for the record time
+        low = optimized_hold + 0.1
+        high = race_duration - 1
+        while low <= high:
+            mid = low + (high - low) / 2
+            distance = compute_distance(race_duration, mid)
+            if record_distance - distance > 0:
+                high = mid - 0.000001
+            else:
+                low = mid + 0.000001
+
+        hold_upper = math.floor(mid)
+
+        # multiply all the elements together to compute the answer
+        print(f"Part 2 = {hold_upper - hold_lower + 1}")
 
 
 if __name__ == "__main__":
     main("day_6_test_input.txt", 1)
     main("day_6_input.txt", 1)
-    # main("day_6_test_input.txt", 2)
-    # main("day_6_input.txt", 2)
+    main("day_6_test_input.txt", 2)
+    main("day_6_input.txt", 2)
