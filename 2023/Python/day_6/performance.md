@@ -4,6 +4,6 @@ All tests were done on with hyperfine with three warmup rounds. CPU uses was a R
 
 | Language | Runtime | min ... max | runs |
 |----------|---------|-------------|------|
-| Python (both) | 15.981s ± 0.149s | 15.816s ... 16.158s | 100 |
-| rust (part 1) | 5 ± 0.2ms | 4.6ms ... 5.7ms | 100 |
-| rust (part 2) | 226.964s ± 7.374s | 219.05s ... 236.968s | 5 |
+| Python (both) | 446.0ms ± 6.9ms | 438.2ms ... 477.7ms | 100 |
+| rust (part 1) | 0 ± 0ms | 0ms ... 0ms | 100 |
+| rust (part 2) | 0 ± 0ms | 0ms ... 0ms | 100 |
