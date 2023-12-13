@@ -12,11 +12,11 @@ fn get_first_last_nums(input: &str) -> anyhow::Result<Vec<[u32; 2]>> {
             [first, last]
         })
         .collect();
-    return Ok(nums);
+     Ok(nums)
 }
 
 fn get_sum(nums: Vec<[u32; 2]>) -> u32 {
-    return nums.into_iter().map(|[f, l]| f * 10 + l).sum();
+    nums.into_iter().map(|[f, l]| f * 10 + l).sum()
 }
 
 fn main() -> anyhow::Result<()> {
@@ -25,7 +25,7 @@ fn main() -> anyhow::Result<()> {
     let nums = get_first_last_nums(input)?;
     let sum = get_sum(nums);
     println!("The answer is: {}", sum);
-    return Ok(());
+    Ok(())
 }
 
 #[cfg(test)]
