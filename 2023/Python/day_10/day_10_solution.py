@@ -16,9 +16,11 @@ class Node:
     direction: tuple[Direction, Direction]
     row: int
     col: int
+    value: str
 
-    def __init__(self, width: int, char: str, row: int, col: int):
-        match char:
+    def __init__(self, width: int, raw_value: str, row: int, col: int):
+        self.value = raw_value
+        match raw_value:
             case "|":
                 self.direction = (Direction.NORTH, Direction.SOUTH)
             case "-":
@@ -41,11 +43,15 @@ class Node:
 
         self.index = row * width + col
 
+    def __str__(self):
+        return f"{self.value}, ({self.row}, {self.col})"
+
 
 class Map:
     def __init__(self, lines: list[str]):
         self.field = []
         self.width = len(lines[0])
+        self.height = len(lines)
         for row, line in enumerate(lines):
             for col, char in enumerate(line):
                 n = Node(self.width, char, row, col)
@@ -55,6 +61,9 @@ class Map:
         row, col = pos
         index = row * self.width + col
         return self.field[index]
+
+    def __iter__(self):
+        return iter(self.field)
 
 
 def get_lines(file: str):
@@ -71,7 +80,83 @@ def main(file: str, part: int):
     if part == 1:
         # Build a map
         m = Map(lines)
-        # Now what do we do?
+        start_node = next(filter(lambda d: "S" in d.value, m))
+
+        path = []
+        # need to "seed" the start, we could guess, but the data is "nice"
+        # and I can just look for it.
+        offset = (1, 0)
+        next_node = m[
+            (start_node.row + offset[0]) % m.width,
+            (start_node.col + offset[1]) % m.height,
+        ]
+
+        this_node = next_node
+
+        def ez_offset(row_offset: int, col_offset: int) -> Node:
+            offset_node = m[
+                (start_node.row + row_offset) % m.width,
+                (start_node.col + col_offset) % m.height,
+            ]
+            return offset_node
+
+        while next_node.value != "S":
+            candidates = []
+
+            if (
+                Direction.NORTH in this_node.direction
+                and Direction.SOUTH in this_node.direction
+            ):
+                candidates.append(ez_offset(1, 0))
+                candidates.append(ez_offset(-1, 0))
+            if (
+                Direction.EAST in this_node.direction
+                and Direction.WEST in this_node.direction
+            ):
+                candidates.append(ez_offset(0, 1))
+                candidates.append(ez_offset(0, -1))
+            if (
+                Direction.NORTH in this_node.direction
+                and Direction.EAST in this_node.direction
+            ):
+                candidates.append(ez_offset(-1, 1))
+                candidates.append(ez_offset(1, -1))
+            if (
+                Direction.NORTH in this_node.direction
+                and Direction.WEST in this_node.direction
+            ):
+                candidates.append(ez_offset(-1, -1))
+                candidates.append(ez_offset(1, 1))
+            if (
+                Direction.SOUTH in this_node.direction
+                and Direction.WEST in this_node.direction
+            ):
+                candidates.append(ez_offset(1, -1))
+                candidates.append(ez_offset(-1, 1))
+            if (
+                Direction.SOUTH in this_node.direction
+                and Direction.EAST in this_node.direction
+            ):
+                candidates.append(ez_offset(1, 1))
+                candidates.append(ez_offset(-1, -1))
+
+            # print(len(candidates))
+            # for d in candidates:
+            #     print(d, d.direction)
+            # exit()
+
+            # This only works because nodes only have one entrance and one exit
+            for n in candidates:
+                if Direction.NONE in n.direction:
+                    print("none")
+                    continue
+                else:
+                    this_node = n
+                    path.append(n)
+                    print(n)
+                    break
+
+        print(path)
 
     if part == 2:
         print("Not implemented yet")
